@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Switch, Text, View } from "react-native";
+import styled from "styled-components/native";
+import GridPlayers from "./src/components/GridPlayers";
+import ThemeManager, { useTheme } from "./src/themes";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeManager>
+      <HomeScreen />
+    </ThemeManager>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function HomeScreen() {
+  const theme = useTheme();
+  return (
+    <Container>
+      <Title>Players</Title>
+      <Switch
+        value={theme.mode === "dark"}
+        onValueChange={(value) => theme.setMode(value ? "dark" : "light")}
+      />
+      <GridPlayers />
+    </Container>
+  );
+}
+
+const Container = styled.View`
+  flex: 1;
+  display: flex;
+  padding-top: 20px;
+  background: ${(props) => props.theme.backgroundAlt};
+  align-items: center;
+  justify-content: center;
+`;
+
+const Title = styled.Text`
+  font-size: 24;
+  color: ${(props) => props.theme.text};
+`;
